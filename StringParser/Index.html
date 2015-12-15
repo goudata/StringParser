@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+        function ParseText() {
+            // Clear results.
+            $("#result").html("");
+
+            // API Call using Ajax
+            $.ajax({
+                url: 'api/Parse', // Web API URI.
+                type: 'GET', // Request Type
+                // Get list of texts from HTML element, replace extra spaces and split if there are spaces between WORDS.
+                // EX. I LOVE   STRING     PARSER  ======> I LOVE STRING PARSER.
+                data: { list: $("#txtToParse").val().replace(/\s{2,}/g, ' ').split(' ') }, 
+                traditional: true,
+                success: function (result) {
+                    console.log(JSON.stringify(result)); // print results to console.
+                    // Get result object from server-side and present in client-side.
+                    $.each(result, function (key, value) {
+                        $("#result").append(value + " ");
+                    })
+                    
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <input type="text" id="txtToParse" />
+    <input type="button" id="btnParse" value="Parse It!" onclick="ParseText()" />
+    <h1 id="result"></h1>
+</body>
+</html>
